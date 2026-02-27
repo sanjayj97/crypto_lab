@@ -1,0 +1,162 @@
+<!-- hill_math.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Math Tools</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    .calc-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        font-family: "Consolas", monospace;
+        font-size: 14px;
+    }
+    .calc-table th, .calc-table td {
+        border: 1px solid #cbd5e1;
+        padding: 8px;
+        text-align: center;
+    }
+    .calc-table th {
+        background-color: var(--sidebar-bg);
+        color: #fff;
+    }
+    .calc-table tr:nth-child(even) {
+        background-color: #f8fafc;
+    }
+    .equation-box {
+        background: #f1f5f9;
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-family: monospace;
+        color: var(--primary-dark);
+        border-left: 4px solid var(--secondary);
+    }
+    .input-row { display: flex; gap: 20px; }
+    .input-col { flex: 1; }
+    
+    .btn-row { display: flex; gap: 10px; margin-top: 10px; }
+    .btn-gcd { background-color: var(--secondary); }
+    .btn-ext { background-color: var(--primary); }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="logo">CRYPTO LAB</div>
+    <nav><ul><li><a href="{{ url_for('root') }}">← Back to Dashboard</a></li></ul></nav>
+  </aside>
+
+  <main class="content">
+    <header><h1>Number Theory Tools</h1></header>
+
+    <section class="form-section">
+      <form method="POST">
+        
+        <div class="input-row">
+            <div class="input-col">
+                <div class="form-group">
+                    <label>Number A</label>
+                    <input type="number" name="a" placeholder="e.g., 26" value="{{ a_val if a_val else '' }}" required>
+                </div>
+            </div>
+            <div class="input-col">
+                <div class="form-group">
+                    <label>Number B</label>
+                    <input type="number" name="b" placeholder="e.g., 30" value="{{ b_val if b_val else '' }}" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button type="submit" name="action" value="gcd" class="btn-gcd">Find GCD Only</button>
+            <button type="submit" name="action" value="extended" class="btn-ext">Extended Euclidean</button>
+        </div>
+      </form>
+
+      {% if error %}
+      <div class="error-message">Error: {{ error }}</div>
+      {% endif %}
+
+      {% if gcd is not none %}
+      <div class="result-container">
+        
+        <!-- ================= MODE 1: SIMPLE GCD (With Steps) ================= -->
+        {% if mode == 'gcd' %}
+            <h3>1. Solution Summary</h3>
+            <div class="equation-box">
+                <div><strong>Calculation:</strong> GCD({{ a_val }}, {{ b_val }})</div>
+                <div><strong>Result:</strong> {{ gcd }}</div>
+            </div>
+
+            <h3>2. Euclidean Algorithm Steps</h3>
+            <p style="font-size:13px; color:#64748b; margin-bottom:5px;">
+                Performing division on <strong>{{ calc_a }}</strong> and <strong>{{ calc_b }}</strong>.
+            </p>
+            <table class="calc-table">
+                <thead>
+                    <tr>
+                        <th>Step</th>
+                        <th>Quotient (q)</th>
+                        <th>Remainder (r)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in steps %}
+                    <tr>
+                        <td>{{ loop.index0 }}</td>
+                        <td>{{ row.q }}</td>
+                        <td>{{ row.r }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        <!-- ================= MODE 2: EXTENDED EUCLIDEAN ================= -->
+        {% elif mode == 'extended' %}
+            <h3>1. Solution Summary</h3>
+            <div class="equation-box">
+                <div><strong>Equation:</strong> {{ a_val }}x + {{ b_val }}y = GCD</div>
+                <div><strong>Result:</strong> {{ gcd }}</div>
+                
+                <div style="margin-top:10px; padding-top:10px; border-top:1px solid #cbd5e1;">
+                    <strong>Linear Combination:</strong><br>
+                    {{ linear_combo }}
+                </div>
+            </div>
+
+            <h3>2. Extended Algorithm Steps</h3>
+            <p style="font-size:13px; color:#64748b; margin-bottom:5px;">
+                Note: Calculation performed on <strong>{{ calc_a }}</strong> (Larger) and <strong>{{ calc_b }}</strong> (Smaller).
+            </p>
+            <table class="calc-table">
+                <thead>
+                    <tr>
+                        <th>Step</th>
+                        <th>Quotient (q)</th>
+                        <th>Remainder (r)</th>
+                        <th>s (Coeff for {{ calc_a }})</th>
+                        <th>t (Coeff for {{ calc_b }})</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in steps %}
+                    <tr>
+                        <td>{{ loop.index0 }}</td>
+                        <td>{{ row.q }}</td>
+                        <td>{{ row.r }}</td>
+                        <td style="color: var(--primary); font-weight:bold;">{{ row.s }}</td>
+                        <td>{{ row.t }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+      </div>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!-- playfair.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Playfair Cipher</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="logo">CRYPTO LAB</div>
+    <nav><ul><li><a href="{{ url_for('root') }}">← Back to Dashboard</a></li></ul></nav>
+  </aside>
+
+  <main class="content">
+    <header><h1>Playfair Cipher</h1></header>
+
+    <section class="form-section">
+      <form method="POST">
+        <div class="form-group">
+            <label>Keyword</label>
+            <input type="text" name="key" placeholder="e.g. MONARCHY" value="{{ request.form.get('key', '') }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Input Text</label>
+            <textarea name="text" placeholder="Enter plaintext or ciphertext..." required>{{ request.form.get('text', '') }}</textarea>
+        </div>
+        
+        <div style="display: flex; gap: 10px;">
+            <button type="submit" name="encrypt" style="background: var(--primary);">Encrypt</button>
+            <button type="submit" name="decrypt" style="background: var(--success);">Decrypt</button>
+        </div>
+      </form>
+
+      {% if error %}<div class="error-message">Error: {{ error }}</div>{% endif %}
+
+      {% if data %}
+      <div class="result-container">
+        <h3>Operation: {{ mode }}</h3>
+        
+        <h4>Key Matrix (5x5):</h4>
+        <div class="output-box" style="text-align: center; letter-spacing: 5px;">
+{% for row in data.matrix %}{{ row }}
+{% endfor %}
+        </div>
+        
+        <h4>Processed Text:</h4>
+        <div class="output-box">{{ data.text }}</div>
+      </div>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>

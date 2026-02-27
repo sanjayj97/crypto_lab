@@ -1,0 +1,589 @@
+/* style.css */
+/* =========================================
+   1. VARIABLES & RESET
+   ========================================= */
+:root {
+    /* Brand Colors */
+    --primary: #4361ee;       /* Vibrant Blue */
+    --primary-dark: #3a0ca3;  /* Deep Purple-Blue */
+    --secondary: #4cc9f0;     /* Cyan Accent */
+    
+    /* Functional Colors */
+    --danger: #ef476f;        /* Red for Errors/Stop */
+    --success: #06d6a0;       /* Green for Success/Decrypt */
+    --warning: #ffd166;       /* Yellow */
+
+    /* UI Colors */
+    --dark-bg: #0f172a;       /* Darkest Navy */
+    --sidebar-bg: #1e293b;    /* Slate Blue (Sidebar) */
+    --light-bg: #f1f5f9;      /* Page Background */
+    --card-bg: #ffffff;       /* Card Background */
+    
+    /* Text Colors */
+    --text-main: #334155;     /* Dark Gray */
+    --text-light: #94a3b8;    /* Muted Gray */
+    --text-inv: #ffffff;      /* White Text */
+
+    /* Effects */
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --radius: 12px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Fast, modern system font stack */
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--light-bg);
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+/* =========================================
+   2. SIDEBAR NAVIGATION
+   ========================================= */
+.sidebar {
+    width: 260px;
+    background-color: var(--sidebar-bg);
+    color: var(--text-inv);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+
+.sidebar .logo {
+    font-size: 24px;
+    font-weight: 800;
+    padding: 30px;
+    text-align: center;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar nav {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    margin-bottom: 8px;
+}
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    color: var(--text-light);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.sidebar ul li a:hover {
+    background-color: rgba(255,255,255,0.08);
+    color: var(--text-inv);
+    transform: translateX(5px);
+}
+
+.sidebar ul li a.active {
+    background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+    color: var(--text-inv);
+    box-shadow: 0 4px 15px rgba(67, 97, 238, 0.4);
+}
+
+/* =========================================
+   3. MAIN CONTENT LAYOUT
+   ========================================= */
+.content {
+    margin-left: 260px;
+    padding: 40px;
+    width: calc(100% - 260px);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    background: var(--card-bg);
+    padding: 20px 30px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--sidebar-bg);
+}
+
+/* =========================================
+   4. DASHBOARD CARDS (Index)
+   ========================================= */
+.cipher-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.cipher-card {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-top: 4px solid var(--primary);
+}
+
+.cipher-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.cipher-card h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: var(--sidebar-bg);
+    border-bottom: 2px solid var(--light-bg);
+    padding-bottom: 10px;
+}
+
+.link-list {
+    list-style: none;
+}
+
+.link-list li {
+    margin-bottom: 10px;
+}
+
+.link-list a {
+    text-decoration: none;
+    color: var(--text-main);
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 15px;
+    border-radius: 8px;
+    background-color: var(--light-bg);
+    transition: 0.2s;
+    font-weight: 600;
+}
+
+.link-list a span {
+    color: var(--primary);
+}
+
+.link-list a:hover {
+    background-color: var(--primary);
+    color: var(--text-inv);
+}
+
+.link-list a:hover span {
+    color: var(--text-inv);
+}
+
+/* =========================================
+   5. FORMS & INPUTS
+   ========================================= */
+section.form-section {
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    max-width: 800px;
+    margin: 0 auto; /* Center the form */
+}
+
+form {
+    display: grid;
+    gap: 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-light);
+    letter-spacing: 0.5px;
+}
+
+input, textarea {
+    padding: 12px 16px;
+    border: 2px solid var(--light-bg);
+    border-radius: 8px;
+    background-color: var(--light-bg);
+    font-size: 15px;
+    transition: all 0.2s;
+    font-family: "Consolas", "Monaco", monospace; /* Code font for inputs */
+    color: var(--text-main);
+    width: 100%;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Standard Buttons */
+button {
+    border: none;
+    padding: 14px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.2s;
+    color: #fff;
+    background-color: var(--primary);
+    flex: 1; /* For side-by-side buttons */
+}
+
+button:hover {
+    filter: brightness(110%);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* =========================================
+   6. MATRIX GRID GENERATOR STYLES
+   ========================================= */
+.matrix-controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.btn-generate {
+    background-color: var(--sidebar-bg); /* Dark button */
+    padding: 12px 16px;
+    height: 100%; /* Match input height */
+    flex: 0 0 auto; /* Don't stretch */
+    margin: 0;
+}
+
+.matrix-grid-container {
+    display: grid;
+    gap: 10px;
+    margin-top: 5px;
+    max-width: 450px;
+    background: var(--light-bg);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px dashed #cbd5e1;
+}
+
+.matrix-cell {
+    text-align: center;
+    padding: 10px !important; /* Override standard input padding */
+    font-weight: bold;
+    font-size: 16px;
+    background: #fff;
+    border: 1px solid #cbd5e1;
+}
+
+/* Hide the textarea used for Python backend transfer */
+.hidden-matrix-input {
+    display: none;
+}
+
+/* =========================================
+   7. OUTPUTS & ALERTS
+   ========================================= */
+.error-message {
+    background-color: #fef2f2;
+    color: var(--danger);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #fecaca;
+    margin-top: 25px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.result-container {
+    margin-top: 30px;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.result-container h3, 
+.result-container h4 {
+    font-size: 14px;
+    color: var(--text-light);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    margin-top: 20px;
+}
+
+.output-box {
+    background-color: var(--sidebar-bg); /* Dark Terminal Background */
+    color: var(--success);               /* Matrix Green Text */
+    padding: 20px;
+    border-radius: 8px;
+    font-family: "Consolas", "Monaco", "Courier New", monospace;
+    font-size: 15px;
+    line-height: 1.6;
+    max-height: 300px;       /* Limit height to ~15 lines */
+    overflow-y: auto;        /* Show vertical scrollbar if needed */
+    
+    /* WRAPPING LOGIC */
+    white-space: pre-wrap;   /* Preserve formatting but wrap text */
+    word-break: break-all;
+    border-left: 5px solid var(--success);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Simple fade in animation for results */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   8. RESPONSIVE DESIGN
+   ========================================= */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    .content {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+    }
+    header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+}
+
+/* =========================================
+   9. VERTICAL MENU DASHBOARD (New UI)
+   ========================================= */
+
+/* Center the menu container */
+.vertical-menu-container {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* The long horizontal buttons */
+.action-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--card-bg);
+    padding: 25px 30px;
+    border-radius: 16px;
+    text-decoration: none;
+    color: var(--text-main);
+    box-shadow: var(--shadow);
+    border-left: 6px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Distinct border colors for different categories */
+.action-card.cipher { border-left-color: var(--primary); }
+.action-card.math   { border-left-color: var(--secondary); }
+.action-card.analysis { border-left-color: var(--warning); }
+
+/* Typography inside the card */
+.action-card h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.action-card p {
+    margin: 5px 0 0 0;
+    font-size: 13px;
+    color: var(--text-light);
+}
+
+/* The arrow icon */
+.action-card .arrow {
+    font-size: 20px;
+    color: var(--text-light);
+    transition: transform 0.2s;
+}
+
+/* Hover Effects */
+.action-card:hover {
+    transform: translateX(10px);
+    background-color: #fff;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.action-card:hover .arrow {
+    color: var(--primary);
+    transform: translateX(5px);
+}
+
+/* Tag style for mapping (optional) */
+.tag {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: var(--light-bg);
+    color: var(--text-light);
+    margin-left: 10px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   10. VISUALIZATION STYLES (Exercise 2)
+   ========================================= */
+
+/* The Container for Rounds */
+.round-box {
+    border: 1px solid #cbd5e1;
+    margin: 10px 0;
+    border-radius: 6px;
+    background: #fff;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Clickable Header */
+.round-header {
+    background: #f1f5f9;
+    padding: 12px 15px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    color: #334155;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e2e8f0;
+    transition: background 0.2s;
+}
+
+.round-header:hover {
+    background: #e2e8f0;
+}
+
+/* Toggle Icon (+/-) */
+.toggle-icon::before {
+    content: "−"; /* Minus sign for open */
+    font-size: 18px;
+    font-weight: bold;
+}
+.round-header.collapsed .toggle-icon::before {
+    content: "+"; /* Plus sign for closed */
+}
+
+/* Content Area */
+.round-content {
+    padding: 15px;
+    background: #ffffff;
+    display: block;
+}
+
+.round-content.hidden {
+    display: none;
+}
+
+/* Rows: Label vs Value */
+.step-row {
+    display: flex;
+    margin-bottom: 6px;
+    font-family: "Consolas", monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    border-bottom: 1px dashed #f1f5f9;
+    padding-bottom: 4px;
+}
+
+.step-label {
+    width: 140px;
+    font-weight: 700;
+    color: #64748b;
+    flex-shrink: 0;
+}
+
+.step-value {
+    word-break: break-all;
+    color: #0f172a;
+    font-family: "Consolas", monospace;
+}
+
+/* 4x4 Matrix Grid (AES) */
+.matrix-display {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 160px;
+    gap: 2px;
+    margin: 5px 0 15px 140px; /* Indent to align with values */
+    background: #e2e8f0;
+    padding: 2px;
+    border-radius: 4px;
+}
+
+.matrix-cell {
+    background: #fff;
+    text-align: center;
+    padding: 4px 0;
+    font-family: "Consolas", monospace;
+    font-size: 11px;
+    color: #334155;
+}
+
+/* Block Separator */
+.block-separator {
+    border: 0;
+    border-top: 2px solid #e2e8f0;
+    margin: 30px 0 10px 0;
+}
+
+.block-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}

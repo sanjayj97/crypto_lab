@@ -1,0 +1,133 @@
+<!-- hill_matrix.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hill Matrix Tools</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="logo">CRYPTO LAB</div>
+    <nav><ul><li><a href="{{ url_for('root') }}">← Back to Dashboard</a></li></ul></nav>
+  </aside>
+
+  <main class="content">
+    <header><h1>Matrix Analyzer (Inv, Det, Transpose)</h1></header>
+
+    <section class="form-section">
+      <form method="POST">
+        <div class="form-group">
+            <label>Matrix Size (n)</label>
+            <div class="matrix-controls">
+                <input type="number" name="size" id="sizeInput" value="{{ request.form.get('size', '') }}" required style="flex:1">
+                <button type="button" class="btn-generate" onclick="generateMatrixInputs()">Generate Matrix</button>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>Matrix</label>
+            <div id="matrixContainer" class="matrix-grid-container"></div>
+            <textarea name="matrix" id="realMatrixInput" class="hidden-matrix-input">{{ request.form.get('matrix', '') }}</textarea>
+        </div>
+        
+        <button type="submit">Analyze Matrix</button>
+      </form>
+
+      {% if error %}<div class="error-message">Error: {{ error }}</div>{% endif %}
+
+      {% if results %}
+      <div class="result-container" style="display: grid; gap: 20px; margin-top: 20px;">
+        
+        <div>
+            <h3>Determinant (Mod 26):</h3>
+            <div class="output-box">{{ results.det }} (Mod 26: {{ results.det_mod }})</div>
+        </div>
+
+        <div>
+            <h3>Multiplicative Inverse of Det:</h3>
+            <div class="output-box">{{ results.det_inv }}</div>
+        </div>
+
+        <div>
+            <h3>Transpose Matrix:</h3>
+            <div class="output-box">{{ results.transpose }}</div>
+        </div>
+
+        <div>
+            <h3>Inverse Matrix (Mod 26):</h3>
+            <div class="output-box" style="border-left-color: var(--primary);">{{ results.inverse }}</div>
+        </div>
+
+      </div>
+      {% endif %}
+    </section>
+  </main>
+  
+  <!-- hill_matrix.html (Bottom part) -->
+<script>
+    function generateMatrixInputs() {
+      const sizeInput = document.getElementById('sizeInput');
+      const container = document.getElementById('matrixContainer');
+      const size = parseInt(sizeInput.value);
+
+      container.innerHTML = ''; 
+
+      if (!size || size < 2 || size > 10) {
+        alert("Please enter a valid size (2-10)");
+        return;
+      }
+
+      container.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+
+      for (let i = 0; i < size * size; i++) {
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.className = 'matrix-cell';
+        input.required = true;
+        input.placeholder = '#';
+        input.addEventListener('input', updateHiddenField);
+        container.appendChild(input);
+      }
+      updateHiddenField();
+    }
+
+    function updateHiddenField() {
+      const cells = document.querySelectorAll('.matrix-cell');
+      if (cells.length > 0) {
+        let matrixString = "";
+        cells.forEach(cell => { 
+            matrixString += cell.value + " "; 
+        });
+        document.getElementById('realMatrixInput').value = matrixString.trim();
+      }
+    }
+
+    function restoreMatrixState() {
+        const hiddenInput = document.getElementById('realMatrixInput');
+        const sizeInput = document.getElementById('sizeInput');
+        const rawData = hiddenInput.value.trim();
+
+        if (rawData) {
+            const values = rawData.split(/\s+/);
+            const size = Math.sqrt(values.length);
+
+            if (Number.isInteger(size) && size >= 2) {
+                sizeInput.value = size;
+                generateMatrixInputs();
+                const cells = document.querySelectorAll('.matrix-cell');
+                cells.forEach((cell, index) => {
+                    cell.value = values[index];
+                });
+            }
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', restoreMatrixState);
+
+    document.querySelector('form').addEventListener('submit', function(e) {
+       updateHiddenField();
+    });
+</script>
+</body>
+</html>

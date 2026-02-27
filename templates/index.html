@@ -1,0 +1,133 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crypto Lab Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">CRYPTO LAB</div>
+    <nav>
+      <ul>
+        <li>
+          <a href="{{ url_for('exercise', ex_id='ex1') }}" class="{{ 'active' if active_ex == 'ex1' else '' }}">
+            Exercise 1
+          </a>
+        </li>
+
+        <li>
+          <a href="{{ url_for('exercise', ex_id='ex2') }}" class="{{ 'active' if active_ex == 'ex2' else '' }}">
+            Exercise 2
+          </a>
+        </li> 
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="content">
+    
+    {% if active_ex == 'ex1' %}
+      <header style="justify-content: center; text-align: center; margin-bottom: 50px; background: transparent; box-shadow: none;">
+        <div>
+          <h1 style="font-size: 32px; color: var(--primary-dark);">Substitution Ciphers and Primitive Root</h1>
+          <p style="color: var(--text-light); margin-top: 10px;">Exercise 1</p>
+        </div>
+      </header>
+      
+      <div class="vertical-menu-container">
+        
+        <a href="{{ url_for('ex1.shift_route') }}" class="action-card cipher">
+            <div>
+                <h3>Shift Cipher</h3>
+            </div>
+            <span class="arrow">&rarr;</span>
+        </a>
+
+        <!-- 2. PLAYFAIR CIPHER -->
+        <a href="{{ url_for('ex1.playfair_route') }}" class="action-card cipher">
+            <div>
+                <h3>Playfair Cipher</h3>
+            </div>
+            <span class="arrow">&rarr;</span>
+        </a>
+
+        <!-- 3. HILL CIPHER -->
+        <a href="{{ url_for('ex1.hill_crypto_route') }}" class="action-card cipher">
+            <div>
+                <h3>Hill Cipher</h3>
+            </div>
+            <span class="arrow">&rarr;</span>
+        </a>
+
+        <!-- 4. MATRIX ANALYSIS -->
+        <a href="{{ url_for('ex1.hill_matrix_route') }}" class="action-card analysis">
+            <div>
+                <h3>Matrix Analysis</h3>
+                <p>Inverses, Transpose, Cofactors</p>
+            </div>
+            <span class="arrow">&rarr;</span>
+        </a>
+
+        <!-- 5. EXTENDED EUCLIDEAN & GCD -->
+        <a href="{{ url_for('ex1.hill_math_route') }}" class="action-card math">
+            <div>
+                <h3>Extended Euclidean & GCD</h3>
+            </div>
+            <span class="arrow">&rarr;</span>
+        </a>
+
+        <!-- 6. PRIMITIVE ROOT -->
+        <a href="{{ url_for('ex1.primitive_root_route') }}" class="action-card math">
+            <div>
+                <h3>Primitive Root</h3>
+            </div>
+            <span class="arrow">&rarr;</span>
+        </a>
+
+      </div>
+    
+    {% elif active_ex == 'ex2' %}
+      <header style="justify-content: center; text-align: center; margin-bottom: 50px; background: transparent; box-shadow: none;">
+        <div>
+          <h1 style="font-size: 32px; color: var(--primary-dark);">Symmetric Key Cryptography</h1>
+          <p style="color: var(--text-light); margin-top: 10px;">Exercise 2: DES & AES</p>
+        </div>
+      </header>
+      
+      <div class="vertical-menu-container">
+        <a href="{{ url_for('ex2.des_route') }}" class="action-card cipher">
+            <div>
+                <h3>DES Encryption</h3>
+                <p>Data Encryption Standard (64-bit)</p>
+            </div>
+            <span class="arrow">&rarr;</span>
+        </a>
+        <a href="{{ url_for('ex2.aes_route') }}" class="action-card cipher">
+            <div>
+                <h3>AES Encryption</h3>
+                <p>Advanced Encryption Standard (128-bit)</p>
+            </div>
+            <span class="arrow">&rarr;</span>
+        </a>
+      </div>
+    
+
+    <!-- {% else %}
+      <header>
+        <h1>{{ active_ex|upper }} Dashboard</h1>
+      </header>
+      <div style="text-align: center; padding: 60px; border: 2px dashed #cbd5e1; border-radius: 12px; color: #94a3b8;">
+        <p>This exercise is not yet implemented.</p>
+      </div>
+    {% endif %} -->
+
+  </main>
+
+</body>
+</html>

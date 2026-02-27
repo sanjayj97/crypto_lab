@@ -1,0 +1,74 @@
+<!-- shift.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Shift Cipher</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="logo">CRYPTO LAB</div>
+    <nav><ul><li><a href="{{ url_for('root') }}">← Back to Dashboard</a></li></ul></nav>
+  </aside>
+
+  <main class="content">
+    <header><h1>Shift Cipher</h1></header>
+
+    <section class="form-section">
+      <!-- Add onsubmit="return validateRange()" here -->
+      <form method="POST" onsubmit="return validateRange()">
+        
+        <div class="form-group">
+            <label>Input Text</label>
+            <textarea name="text" placeholder="Enter plaintext or ciphertext..." required>{{ request.form.get('text', '') }}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label>Shift Key (0 - 25)</label>
+            <!-- Added id="shiftKey" for the JavaScript to find it -->
+            <input type="number" id="shiftKey" name="key" placeholder="e.g., 3" value="{{ request.form.get('key', '') }}" required>
+        </div>
+        
+        <div style="display: flex; gap: 10px;">
+            <button type="submit" name="encrypt" style="background: var(--primary);">Encrypt</button>
+            <button type="submit" name="decrypt" style="background: var(--success);">Decrypt</button>
+        </div>
+      </form>
+
+      {% if error %}
+      <div class="error-message">Error: {{ error }}</div>
+      {% endif %}
+
+      {% if result %}
+      <div class="result-container">
+        <h3>Result ({{ mode }}):</h3>
+        <div class="output-box">{{ result }}</div>
+      </div>
+      {% endif %}
+    </section>
+  </main>
+
+  <!-- JAVASCRIPT FOR ALERT -->
+  <script>
+    function validateRange() {
+        // 1. Get the value
+        var keyInput = document.getElementById("shiftKey");
+        var val = parseInt(keyInput.value);
+
+        // 2. Check Range
+        if (val < 0 || val > 25) {
+            // 3. Show Alert
+            alert("Value must be between 0 - 25");
+            
+            // 4. Stop the form from submitting to Python
+            return false;
+        }
+        
+        // Allow submission if valid
+        return true;
+    }
+  </script>
+
+</body>
+</html>

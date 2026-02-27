@@ -1,0 +1,134 @@
+<!-- primitive_root.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Primitive Root Finder</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    /* CLEAN LIGHT THEME LOG */
+    .log-container {
+        background: #ffffff;      /* White background */
+        color: #334155;           /* Dark gray text */
+        font-family: "Consolas", "Monaco", monospace;
+        font-size: 12px;
+        padding: 0;               /* Remove padding to let items touch borders */
+        border-radius: 6px;
+        max-height: 500px;
+        overflow-y: auto;
+        border: 1px solid #cbd5e1;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .log-line {
+        padding: 4px 12px;        /* Horizontal padding inside lines */
+        border-bottom: 1px solid #f1f5f9;
+        line-height: 1.4;
+    }
+
+    /* Result Summary Box - Fixes Spacing */
+    .summary-box {
+        background: #f1f5f9;
+        color: var(--primary-dark);
+        border-left: 4px solid var(--secondary);
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-family: monospace;
+        font-size: 14px;
+        white-space: normal;      /* Fixes large gaps */
+        word-wrap: break-word;    /* Wraps long list of numbers */
+        line-height: 1.5;
+    }
+
+    /* COLOR HIGHLIGHTS */
+    .highlight-root { 
+        background-color: #dcfce7; /* Light Green BG */
+        color: #166534;            /* Dark Green Text */
+        font-weight: bold;
+        border-bottom: 1px solid #bbf7d0;
+    } 
+    
+    .highlight-fail { 
+        color: #991b1b;            /* Dark Red Text */
+        /* No background for fails to keep it clean, just text color */
+    } 
+    
+    .highlight-header { 
+        background-color: #f8fafc; /* Very light gray header */
+        color: #475569;
+        font-weight: bold; 
+        border-top: 2px solid #e2e8f0;
+        margin-top: 0;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+    
+    /* Meta info (phi, factors, etc) */
+    .highlight-meta {
+        color: #d97706; /* Amber */
+        font-weight: bold;
+        background-color: #fffbeb;
+    }
+  </style>
+</head>
+<body>
+  
+  <aside class="sidebar">
+    <div class="logo">CRYPTO LAB</div>
+    <nav><ul><li><a href="{{ url_for('root') }}">← Back to Dashboard</a></li></ul></nav>
+  </aside>
+
+  <main class="content">
+    <header><h1>Primitive Root Finder</h1></header>
+
+    <section class="form-section">
+      <form method="POST">
+        <div class="form-group">
+            <label>Modulus (n)</label>
+            <input type="number" name="n" placeholder="e.g., 7, 11, 13" value="{{ n_val if n_val else '' }}" required>
+            <!-- <small style="color: #64748b; font-size: 13px;">
+                Enter a number to find its generators (Primitive Roots).
+            </small> -->
+        </div>
+        <button type="submit">Find Roots</button>
+      </form>
+
+      {% if error %}
+      <div class="error-message">Error: {{ error }}</div>
+      {% endif %}
+
+      {% if steps_log %}
+      <div class="result-container">
+        
+        <!-- 1. RESULT SUMMARY (Fixed Spacing) -->
+        <h3>1. Result Summary</h3>
+        <div class="summary-box">
+            <strong>Primitive Roots found:</strong><br>
+            {{ roots }}
+        </div>
+
+        <!-- 2. DETAILED LOG (Light Theme) -->
+        <h3>Calculation</h3>
+        <div class="log-container">
+            {% for line in steps_log %}
+                {% if "is a primitive root" in line %}
+                    <div class="log-line highlight-root">{{ line }}</div>
+                {% elif "NOT a primitive root" in line %}
+                    <div class="log-line highlight-fail">{{ line }}</div>
+                {% elif "Testing g=" in line %}
+                    <div class="log-line highlight-header">{{ line }}</div>
+                {% elif "Check primitive root" in line or "phi(" in line or "Expected number" in line or "Prime factors" in line %}
+                     <div class="log-line highlight-meta">{{ line }}</div>
+                {% else %}
+                    <div class="log-line">{{ line }}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+      </div>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>
