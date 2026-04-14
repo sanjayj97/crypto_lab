@@ -1,31 +1,32 @@
-/* style.css */
 /* =========================================
    1. VARIABLES & RESET
    ========================================= */
 :root {
-    /* Brand Colors */
-    --primary: #4361ee;       /* Vibrant Blue */
-    --primary-dark: #3a0ca3;  /* Deep Purple-Blue */
-    --secondary: #4cc9f0;     /* Cyan Accent */
+    /* Brand Colors - Matching Home Page */
+    --primary: #4f46e5;       /* Indigo */
+    --primary-dark: #4338ca;  /* Deep Indigo */
+    --secondary: #0ea5e9;     /* Sky Blue */
     
     /* Functional Colors */
-    --danger: #ef476f;        /* Red for Errors/Stop */
-    --success: #06d6a0;       /* Green for Success/Decrypt */
-    --warning: #ffd166;       /* Yellow */
+    --danger: #ef476f;        /* Red */
+    --success: #10b981;       /* Emerald */
+    --warning: #f59e0b;       /* Amber */
 
     /* UI Colors */
-    --dark-bg: #0f172a;       /* Darkest Navy */
-    --sidebar-bg: #1e293b;    /* Slate Blue (Sidebar) */
-    --light-bg: #f1f5f9;      /* Page Background */
-    --card-bg: #ffffff;       /* Card Background */
+    --sidebar-bg: #1e293b;    /* Dark Slate (Matches Home Hero) */
+    --light-bg: #f8fafc;      /* Very Light Gray */
+    --card-bg: #ffffff;       /* Pure White */
+    --border-color: #e2e8f0;  /* Light Border */
     
     /* Text Colors */
-    --text-main: #334155;     /* Dark Gray */
-    --text-light: #94a3b8;    /* Muted Gray */
+    --text-main: #334155;     /* Dark Slate Text */
+    --text-light: #64748b;    /* Muted Text */
     --text-inv: #ffffff;      /* White Text */
 
     /* Effects */
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --radius: 12px;
 }
 
@@ -33,8 +34,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* Fast, modern system font stack */
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 body {
@@ -56,8 +56,8 @@ body {
     flex-direction: column;
     position: fixed;
     height: 100vh;
-    box-shadow: 4px 0 24px rgba(0,0,0,0.1);
     z-index: 100;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.15); /* Stronger shadow like Home Hero */
 }
 
 .sidebar .logo {
@@ -66,7 +66,8 @@ body {
     padding: 30px;
     text-align: center;
     letter-spacing: -0.5px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    /* Gradient Text Matching Home Hero Title */
+    background: linear-gradient(135deg, #fff, #94a3b8);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -80,34 +81,35 @@ body {
 
 .sidebar ul {
     list-style: none;
-}
-
-.sidebar ul li {
-    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .sidebar ul li a {
     display: flex;
     align-items: center;
     padding: 12px 16px;
-    color: var(--text-light);
+    color: #cbd5e1; /* Lighter gray for inactive */
     text-decoration: none;
     border-radius: 8px;
     transition: all 0.2s ease;
     font-weight: 500;
-    font-size: 15px;
+    font-size: 14px;
+    border: 1px solid transparent;
 }
 
 .sidebar ul li a:hover {
-    background-color: rgba(255,255,255,0.08);
+    background-color: rgba(255,255,255,0.05);
     color: var(--text-inv);
-    transform: translateX(5px);
+    transform: translateX(3px);
 }
 
 .sidebar ul li a.active {
     background: linear-gradient(90deg, var(--primary), var(--primary-dark));
     color: var(--text-inv);
-    box-shadow: 0 4px 15px rgba(67, 97, 238, 0.4);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
 /* =========================================
@@ -117,88 +119,94 @@ body {
     margin-left: 260px;
     padding: 40px;
     width: calc(100% - 260px);
+    max-width: 1200px;
+    margin-right: auto; 
 }
 
+/* Header inside tools */
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 40px;
-    background: var(--card-bg);
-    padding: 20px 30px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
+    margin-bottom: 30px;
 }
 
 header h1 {
-    font-size: 22px;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--sidebar-bg);
+    letter-spacing: -0.5px;
+}
+
+/* =========================================
+   4. DASHBOARD CARDS (Exercise Lists)
+   ========================================= */
+/* Container */
+.vertical-menu-container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: grid;
+    gap: 15px;
+}
+
+/* The horizontal cards in dashboards */
+.action-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--card-bg);
+    padding: 20px 25px;
+    border-radius: 12px; /* Smoother corners */
+    text-decoration: none;
+    color: var(--text-main);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.action-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: var(--border-color); /* Default gray stripe */
+    transition: width 0.2s;
+}
+
+/* Specific Border Colors */
+.action-card.cipher::before   { background-color: var(--primary); }
+.action-card.math::before     { background-color: var(--success); }
+.action-card.analysis::before { background-color: var(--warning); }
+
+.action-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: #cbd5e1;
+}
+
+.action-card h3 {
+    margin: 0;
+    font-size: 16px;
     font-weight: 700;
     color: var(--sidebar-bg);
 }
 
-/* =========================================
-   4. DASHBOARD CARDS (Index)
-   ========================================= */
-.cipher-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
+.action-card p {
+    margin: 4px 0 0 0;
+    font-size: 13px;
+    color: var(--text-light);
 }
 
-.cipher-card {
-    background: var(--card-bg);
-    padding: 30px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-top: 4px solid var(--primary);
-}
-
-.cipher-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-.cipher-card h2 {
+.action-card .arrow {
     font-size: 18px;
-    margin-bottom: 20px;
-    color: var(--sidebar-bg);
-    border-bottom: 2px solid var(--light-bg);
-    padding-bottom: 10px;
-}
-
-.link-list {
-    list-style: none;
-}
-
-.link-list li {
-    margin-bottom: 10px;
-}
-
-.link-list a {
-    text-decoration: none;
-    color: var(--text-main);
-    font-size: 14px;
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 15px;
-    border-radius: 8px;
-    background-color: var(--light-bg);
+    color: #cbd5e1;
     transition: 0.2s;
-    font-weight: 600;
 }
 
-.link-list a span {
+.action-card:hover .arrow {
     color: var(--primary);
-}
-
-.link-list a:hover {
-    background-color: var(--primary);
-    color: var(--text-inv);
-}
-
-.link-list a:hover span {
-    color: var(--text-inv);
+    transform: translateX(5px);
 }
 
 /* =========================================
@@ -206,16 +214,17 @@ header h1 {
    ========================================= */
 section.form-section {
     background: var(--card-bg);
-    padding: 40px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
+    padding: 35px;
+    border-radius: 16px; /* Matches Home Cards */
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
     max-width: 800px;
-    margin: 0 auto; /* Center the form */
+    margin: 0 auto;
 }
 
 form {
     display: grid;
-    gap: 24px;
+    gap: 20px;
 }
 
 .form-group {
@@ -232,14 +241,16 @@ label {
     letter-spacing: 0.5px;
 }
 
-input, textarea {
-    padding: 12px 16px;
-    border: 2px solid var(--light-bg);
+input[type="text"], 
+input[type="number"], 
+textarea {
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    background-color: var(--light-bg);
-    font-size: 15px;
+    background-color: #fcfcfc;
+    font-size: 14px;
     transition: all 0.2s;
-    font-family: "Consolas", "Monaco", monospace; /* Code font for inputs */
+    font-family: "Consolas", monospace; /* Code font for inputs */
     color: var(--text-main);
     width: 100%;
 }
@@ -248,342 +259,182 @@ input:focus, textarea:focus {
     outline: none;
     border-color: var(--primary);
     background-color: #fff;
-    box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
 textarea {
-    min-height: 120px;
+    min-height: 100px;
     resize: vertical;
 }
 
-/* Standard Buttons */
+/* Buttons */
 button {
     border: none;
-    padding: 14px 28px;
-    font-size: 15px;
+    padding: 12px 24px;
+    font-size: 14px;
     font-weight: 600;
     border-radius: 8px;
     cursor: pointer;
     transition: transform 0.1s, box-shadow 0.2s;
     color: #fff;
     background-color: var(--primary);
-    flex: 1; /* For side-by-side buttons */
+    flex: 1;
 }
 
 button:hover {
     filter: brightness(110%);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
 }
 
 button:active {
-    transform: scale(0.98);
+    transform: translateY(0);
 }
 
 /* =========================================
-   6. MATRIX GRID GENERATOR STYLES
-   ========================================= */
-.matrix-controls {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-}
-
-.btn-generate {
-    background-color: var(--sidebar-bg); /* Dark button */
-    padding: 12px 16px;
-    height: 100%; /* Match input height */
-    flex: 0 0 auto; /* Don't stretch */
-    margin: 0;
-}
-
-.matrix-grid-container {
-    display: grid;
-    gap: 10px;
-    margin-top: 5px;
-    max-width: 450px;
-    background: var(--light-bg);
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px dashed #cbd5e1;
-}
-
-.matrix-cell {
-    text-align: center;
-    padding: 10px !important; /* Override standard input padding */
-    font-weight: bold;
-    font-size: 16px;
-    background: #fff;
-    border: 1px solid #cbd5e1;
-}
-
-/* Hide the textarea used for Python backend transfer */
-.hidden-matrix-input {
-    display: none;
-}
-
-/* =========================================
-   7. OUTPUTS & ALERTS
+   6. OUTPUTS & ALERTS
    ========================================= */
 .error-message {
     background-color: #fef2f2;
     color: var(--danger);
-    padding: 15px;
+    padding: 12px;
     border-radius: 8px;
     border: 1px solid #fecaca;
-    margin-top: 25px;
-    font-weight: 600;
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: 500;
     text-align: center;
 }
 
 .result-container {
     margin-top: 30px;
-    animation: fadeIn 0.4s ease-in-out;
+    animation: fadeIn 0.3s ease-out;
 }
 
-.result-container h3, 
-.result-container h4 {
-    font-size: 14px;
+.result-container h3 {
+    font-size: 13px;
     color: var(--text-light);
     text-transform: uppercase;
-    margin-bottom: 8px;
-    margin-top: 20px;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
 }
 
 .output-box {
-    background-color: var(--sidebar-bg); /* Dark Terminal Background */
-    color: var(--success);               /* Matrix Green Text */
+    background-color: var(--sidebar-bg); /* Dark Terminal Look */
+    color: var(--success);
     padding: 20px;
     border-radius: 8px;
-    font-family: "Consolas", "Monaco", "Courier New", monospace;
-    font-size: 15px;
-    line-height: 1.6;
-    max-height: 300px;       /* Limit height to ~15 lines */
-    overflow-y: auto;        /* Show vertical scrollbar if needed */
-    
-    /* WRAPPING LOGIC */
-    white-space: pre-wrap;   /* Preserve formatting but wrap text */
+    font-family: "Consolas", monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
     word-break: break-all;
-    border-left: 5px solid var(--success);
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+    max-height: 400px;
+    overflow-y: auto;
+    border-left: 4px solid var(--success);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* Simple fade in animation for results */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
 /* =========================================
-   8. RESPONSIVE DESIGN
+   7. MATRIX & VISUALIZATION (Ex 1 & 2)
    ========================================= */
-@media (max-width: 768px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-    }
-    .content {
-        margin-left: 0;
-        width: 100%;
-        padding: 20px;
-    }
-    header {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-}
-
-/* =========================================
-   9. VERTICAL MENU DASHBOARD (New UI)
-   ========================================= */
-
-/* Center the menu container */
-.vertical-menu-container {
-    max-width: 700px;
-    margin: 0 auto;
+.matrix-controls {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    gap: 10px;
 }
 
-/* The long horizontal buttons */
-.action-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--card-bg);
-    padding: 25px 30px;
-    border-radius: 16px;
-    text-decoration: none;
-    color: var(--text-main);
-    box-shadow: var(--shadow);
-    border-left: 6px solid transparent;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
+.btn-generate {
+    background-color: var(--sidebar-bg);
+    flex: 0 0 auto;
 }
 
-/* Distinct border colors for different categories */
-.action-card.cipher { border-left-color: var(--primary); }
-.action-card.math   { border-left-color: var(--secondary); }
-.action-card.analysis { border-left-color: var(--warning); }
-
-/* Typography inside the card */
-.action-card h3 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.action-card p {
-    margin: 5px 0 0 0;
-    font-size: 13px;
-    color: var(--text-light);
-}
-
-/* The arrow icon */
-.action-card .arrow {
-    font-size: 20px;
-    color: var(--text-light);
-    transition: transform 0.2s;
-}
-
-/* Hover Effects */
-.action-card:hover {
-    transform: translateX(10px);
-    background-color: #fff;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-.action-card:hover .arrow {
-    color: var(--primary);
-    transform: translateX(5px);
-}
-
-/* Tag style for mapping (optional) */
-.tag {
-    font-size: 11px;
-    padding: 4px 8px;
-    border-radius: 4px;
-    background: var(--light-bg);
-    color: var(--text-light);
-    margin-left: 10px;
-    font-weight: 600;
-}
-
-
-/* =========================================
-   10. VISUALIZATION STYLES (Exercise 2)
-   ========================================= */
-
-/* The Container for Rounds */
-.round-box {
-    border: 1px solid #cbd5e1;
-    margin: 10px 0;
-    border-radius: 6px;
-    background: #fff;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-/* Clickable Header */
-.round-header {
-    background: #f1f5f9;
-    padding: 12px 15px;
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 14px;
-    color: #334155;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #e2e8f0;
-    transition: background 0.2s;
-}
-
-.round-header:hover {
-    background: #e2e8f0;
-}
-
-/* Toggle Icon (+/-) */
-.toggle-icon::before {
-    content: "−"; /* Minus sign for open */
-    font-size: 18px;
-    font-weight: bold;
-}
-.round-header.collapsed .toggle-icon::before {
-    content: "+"; /* Plus sign for closed */
-}
-
-/* Content Area */
-.round-content {
-    padding: 15px;
-    background: #ffffff;
-    display: block;
-}
-
-.round-content.hidden {
-    display: none;
-}
-
-/* Rows: Label vs Value */
-.step-row {
-    display: flex;
-    margin-bottom: 6px;
-    font-family: "Consolas", monospace;
-    font-size: 13px;
-    line-height: 1.5;
-    border-bottom: 1px dashed #f1f5f9;
-    padding-bottom: 4px;
-}
-
-.step-label {
-    width: 140px;
-    font-weight: 700;
-    color: #64748b;
-    flex-shrink: 0;
-}
-
-.step-value {
-    word-break: break-all;
-    color: #0f172a;
-    font-family: "Consolas", monospace;
-}
-
-/* 4x4 Matrix Grid (AES) */
-.matrix-display {
+.matrix-grid-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    width: 160px;
-    gap: 2px;
-    margin: 5px 0 15px 140px; /* Indent to align with values */
-    background: #e2e8f0;
-    padding: 2px;
-    border-radius: 4px;
+    gap: 8px;
+    margin-top: 5px;
+    max-width: 400px;
+    background: var(--light-bg);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px dashed var(--border-color);
 }
 
 .matrix-cell {
-    background: #fff;
     text-align: center;
-    padding: 4px 0;
+    padding: 8px !important;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Round Box (Used in DES/AES Logs) */
+.round-box {
+    border: 1px solid var(--border-color);
+    margin: 10px 0;
+    border-radius: 8px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.round-header {
+    background: #f8fafc;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-main);
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.2s;
+}
+
+.round-header:hover { background: #f1f5f9; }
+
+.round-content { padding: 15px; }
+.round-content.hidden { display: none; }
+
+.step-row {
+    display: flex;
+    margin-bottom: 5px;
     font-family: "Consolas", monospace;
+    font-size: 12px;
+    border-bottom: 1px dashed #f1f5f9;
+    padding-bottom: 2px;
+}
+
+.step-label { width: 120px; font-weight: 700; color: #64748b; flex-shrink: 0; }
+.step-value { color: var(--text-main); word-break: break-all; }
+
+/* AES Matrix */
+.matrix-display {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 140px;
+    gap: 1px;
+    margin: 5px 0 15px 120px;
+    background: #cbd5e1;
+    padding: 1px;
+}
+.matrix-display .matrix-cell {
+    background: #fff;
+    padding: 3px 0 !important;
     font-size: 11px;
+    font-family: "Consolas", monospace;
     color: #334155;
 }
 
-/* Block Separator */
-.block-separator {
-    border: 0;
-    border-top: 2px solid #e2e8f0;
-    margin: 30px 0 10px 0;
-}
+.block-separator { border: 0; border-top: 2px solid var(--border-color); margin: 25px 0 15px 0; }
+.block-title { font-size: 14px; font-weight: 800; color: var(--primary); text-transform: uppercase; }
 
-.block-title {
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--primary);
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+/* =========================================
+   8. RESPONSIVE
+   ========================================= */
+@media (max-width: 768px) {
+    .sidebar { width: 100%; height: auto; position: relative; }
+    .content { margin-left: 0; width: 100%; padding: 20px; }
 }

@@ -1,0 +1,214 @@
+<!-- home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crypto Lab - Home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    body {
+        display: block; /* Override flex from style.css */
+        margin: 0;
+        background-color: var(--light-bg);
+    }
+
+    .hero-section {
+        background-color: var(--sidebar-bg); /* The exact nav color */
+        color: #ffffff;
+        padding: 60px 20px 100px 20px; /* Extra bottom padding for overlap */
+        text-align: center;
+        border-radius: 0 0 30px 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .hero-title {
+        font-size: 42px;
+        font-weight: 800;
+        margin: 0;
+        letter-spacing: -1px;
+        background: linear-gradient(135deg, #fff, #94a3b8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+        color: #94a3b8;
+        font-size: 16px;
+        margin-top: 10px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: -60px auto 40px auto; /* Negative margin pulls it up */
+        padding: 0 20px;
+        position: relative;
+    }
+
+    .home-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 30px;
+    }
+
+    /* 3. Cards */
+    .home-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+        text-decoration: none;
+        color: var(--text-main);
+        display: flex;
+        flex-direction: column;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255,255,255,0.5);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Hover Effect */
+    .home-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 30px -10px rgba(0,0,0,0.2);
+    }
+
+    /* Card Colored Top Strip */
+    .home-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        background: var(--card-color);
+    }
+
+    .card-number {
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: #94a3b8;
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+    }
+
+    .card-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin: 0 0 10px 0;
+        color: var(--sidebar-bg); /* Matches sidebar */
+    }
+
+    .card-desc {
+        font-size: 14px;
+        color: #64748b;
+        line-height: 1.6;
+        margin-bottom: 25px;
+        flex-grow: 1;
+    }
+
+    .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+        padding-top: 20px;
+        border-top: 1px dashed #e2e8f0;
+    }
+
+    .btn-arrow {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--sidebar-bg);
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .home-card:hover .btn-arrow {
+        background-color: var(--card-color);
+        color: #fff;
+    }
+
+    .status-badge {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 20px;
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- HERO SECTION (Matches Navigation Bar Color) -->
+  <header class="hero-section">
+    <h1 class="hero-title">CRYPTO LAB</h1>
+    <p class="hero-subtitle">Sanjay J 23BCS181</p>
+  </header>
+
+  <!-- CONTENT GRID -->
+  <div class="container">
+    <div class="home-grid">
+      
+      <!-- Exercise 1 -->
+      <a href="{{ url_for('exercise', ex_id='ex1') }}" class="home-card" style="--card-color: var(--primary);">
+        <div class="card-number">Exercise 01</div>
+        <h2 class="card-title">Classical Ciphers</h2>
+        <p class="card-desc">Explore fundamental substitution techniques including Shift, Playfair, and Hill Ciphers, along with primitive root mathematics.</p>
+        <div class="card-footer">
+            <span class="status-badge">6 Modules</span>
+            <div class="btn-arrow">&rarr;</div>
+        </div>
+      </a>
+
+      <!-- Exercise 2 -->
+      <a href="{{ url_for('exercise', ex_id='ex2') }}" class="home-card" style="--card-color: var(--secondary);">
+        <div class="card-number">Exercise 02</div>
+        <h2 class="card-title">Symmetric Key</h2>
+        <p class="card-desc">Deep dive into DES and AES algorithms. Visualize 16-round Feistel networks, S-Boxes, and Matrix transformations.</p>
+        <div class="card-footer">
+            <span class="status-badge">Encryption / Decryption</span>
+            <div class="btn-arrow">&rarr;</div>
+        </div>
+      </a>
+
+      <!-- Exercise 3 -->
+      <a href="{{ url_for('exercise', ex_id='ex3') }}" class="home-card" style="--card-color: var(--success);">
+        <div class="card-number">Exercise 03</div>
+        <h2 class="card-title">Public Key (RSA)</h2>
+        <p class="card-desc">Generate large prime keys, perform modular exponentiation, and understand the mathematics behind RSA security.</p>
+        <div class="card-footer">
+            <span class="status-badge">Key Gen + Cipher</span>
+            <div class="btn-arrow">&rarr;</div>
+        </div>
+      </a>
+
+      <!-- Add this after Exercise 3 card in the .home-grid div -->
+
+<!-- Exercise 4 -->
+<a href="{{ url_for('exercise', ex_id='ex4') }}" class="home-card" style="--card-color: var(--warning);">
+  <div class="card-number">Exercise 04</div>
+  <h2 class="card-title">Hash Functions</h2>
+  <p class="card-desc">Message Digest 5 (MD5). Understanding block splitting, padding, and non-linear functions.</p>
+  <div class="card-footer">
+      <span class="status-badge">Hashing</span>
+      <div class="btn-arrow">&rarr;</div>
+  </div>
+</a>
+
+    </div>
+  </div>
+
+</body>
+</html>
