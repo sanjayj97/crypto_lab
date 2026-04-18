@@ -1,0 +1,151 @@
+<!-- exercise4/templates/cmac.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CMAC Generator</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  
+  <style>
+    .xor-badge {
+        font-size: 10px;
+        font-weight: 700;
+        color: #fff;
+        background-color: var(--warning);
+        padding: 2px 8px;
+        border-radius: 10px;
+        margin-left: 15px;
+        text-transform: uppercase;
+        vertical-align: middle;
+    }
+    .log-info {
+        font-size: 13px; 
+        color: var(--text-light); 
+        padding: 8px 15px; 
+        background-color: #f8fafc; 
+        border-radius: 6px; 
+        margin: 10px 0; 
+        border: 1px solid var(--border-color);
+    }
+    .step-row.is-result .step-value {
+        color: var(--success);
+        font-weight: 700;
+    }
+  </style>
+
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="logo">CRYPTO LAB</div>
+    <nav><ul><li><a href="{{ url_for('exercise', ex_id='ex4') }}">← Back to Exercise 4</a></li></ul></nav>
+  </aside>
+
+  <main class="content">
+    <header>
+      <h1>CMAC Generator</h1>
+      <p style="color:var(--text-light);">Cipher-based Message Authentication Code (AES-128)</p>
+    </header>
+
+    <section class="form-section">
+      <form method="POST">
+        <div class="form-group">
+            <label>Key (16 bytes as 32 hex characters)</label>
+            <input type="text" name="key" placeholder="e.g., 2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b" required minlength="32" maxlength="32" value="{{ input_key if input_key else '' }}">
+        </div>
+        <div class="form-group">
+            <label>Input Message</label>
+            <textarea name="message" placeholder="Enter message to authenticate..." required style="height: 80px;">{{ input_message if input_message else '' }}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Truncate Output to `n` bytes (Optional)</label>
+            <input type="number" name="truncate_len" placeholder="1-16 (Default is 16)" min="1" max="16" value="{{ input_truncate_len if input_truncate_len else '' }}">
+        </div>
+        <button type="submit" style="background: var(--secondary);">Generate CMAC Tag</button>
+      </form>
+
+      {% if error %}
+      <div class="error-message">Error: {{ error }}</div>
+      {% endif %}
+
+      {% if result %}
+      <div class="result-container">
+        <h3>CMAC Tag Output (Hex):</h3>
+        <div class="output-box" style="color: var(--secondary);">{{ result }}</div>
+      </div>
+      {% endif %}
+
+      {% if log_steps %}
+      <div class="result-container">
+        <h3>Calculation Steps:</h3>
+        
+        <!-- 1. Subkey Generation -->
+        <div class="round-box">
+          <div class="round-header">Step 1: Subkey Generation</div>
+          <div class="round-content">
+            {% for item in log_steps.subkeys %}
+            <div class="step-row">
+              <div class="step-label">{{ item.label }}</div>
+              <div class="step-value">
+                {{ item.value }}
+                {% if item.xor_required %}
+                  <span class="xor-badge">XOR with Rb</span>
+                {% endif %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- 2. Final Block Processing -->
+        <div class="round-box">
+          <div class="round-header">Step 2: Final Block Processing</div>
+          <div class="round-content">
+            {% for item in log_steps.final_block_processing %}
+              {% if item.type == 'info' %}
+                <div class="log-info">{{ item.text }}</div>
+              {% else %}
+                <div class="step-row {{ 'is-result' if item.is_result }}">
+                  <div class="step-label">{{ item.label }}</div>
+                  <div class="step-value">{{ item.value }}</div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- 3. CBC-MAC Iterations -->
+        <div class="round-box">
+          <div class="round-header">Step 3: CBC-MAC Iterations ({{ log_steps.message_info.count }} Block{{'s' if log_steps.message_info.count > 1 else ''}})</div>
+          <div class="round-content">
+            {% for iteration in log_steps.cbc_iterations %}
+              <hr class="block-separator">
+              <h4 class="block-title">Block {{ loop.index }}</h4>
+              {% for item in iteration %}
+              <div class="step-row {{ 'is-result' if item.is_result }}">
+                <div class="step-label">{{ item.label }}</div>
+                <div class="step-value">{{ item.value }}</div>
+              </div>
+              {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- 4. Output Truncation -->
+        {% if log_steps.truncation_info %}
+        <div class="round-box">
+          <div class="round-header">Step 4: Output Truncation</div>
+          <div class="round-content">
+            <div class="log-info">The full 128-bit CMAC tag is truncated to the desired length.</div>
+            <div class="step-row"><div class="step-label">Full CMAC Tag</div><div class="step-value">{{ log_steps.truncation_info.original_tag }}</div></div>
+            <div class="step-row"><div class="step-label">Desired Length</div><div class="step-value">{{ log_steps.truncation_info.length }} bytes</div></div>
+            <div class="step-row is-result"><div class="step-label">Final Truncated Tag</div><div class="step-value">{{ log_steps.truncation_info.final_tag }}</div></div>
+          </div>
+        </div>
+        {% endif %}
+
+      </div>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>

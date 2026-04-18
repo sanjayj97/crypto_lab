@@ -1,15 +1,36 @@
+<!-- exercise4/templates/md5.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>MD5 Hash Generator</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    .log-info {
+        font-size: 13px; 
+        color: var(--text-light); 
+        padding: 8px 15px; 
+        background-color: #f8fafc; 
+        border-radius: 6px; 
+        margin: 10px 0; 
+        border: 1px solid var(--border-color);
+    }
+    .step-row.is-result .step-value {
+        color: var(--success);
+        font-weight: 700;
+    }
+    .round-detail {
+        border-top: 1px dashed var(--border-color);
+        padding-top: 10px;
+        margin-top: 10px;
+    }
+    .round-detail .step-label { font-size: 11px; }
+  </style>
 </head>
 <body>
-  <!-- Sidebar -->
   <aside class="sidebar">
     <div class="logo">CRYPTO LAB</div>
-    <nav><ul><li><a href="{{ url_for('root') }}">← Back to Dashboard</a></li></ul></nav>
+    <nav><ul><li><a href="{{ url_for('exercise', ex_id='ex4') }}">← Back to Exercise 4</a></li></ul></nav>
   </aside>
 
   <main class="content">
@@ -19,12 +40,12 @@
     </header>
 
     <section class="form-section">
+      <!-- Form (Unchanged) -->
       <form method="POST">
         <div class="form-group">
             <label>Input Text</label>
             <textarea name="text" placeholder="Enter text to hash..." required style="height: 80px;">{{ input_text if input_text else '' }}</textarea>
         </div>
-        
         <button type="submit" style="background: var(--warning);">Generate Hash</button>
       </form>
 
@@ -38,6 +59,71 @@
         <div class="output-box" style="color: var(--warning);">{{ result }}</div>
       </div>
       {% endif %}
+
+      <!-- ****** NEW STRUCTURED LOG DISPLAY ****** -->
+      {% if log_steps %}
+      <div class="result-container">
+        <h3>Calculation Steps:</h3>
+
+        <!-- 1. Initial State -->
+        <div class="round-box">
+          <div class="round-header">Step 1: Initialize Buffers</div>
+          <div class="round-content">
+            <div class="step-row"><div class="step-label">a0</div><div class="step-value">{{ log_steps.initial_state.a0 }}</div></div>
+            <div class="step-row"><div class="step-label">b0</div><div class="step-value">{{ log_steps.initial_state.b0 }}</div></div>
+            <div class="step-row"><div class="step-label">c0</div><div class="step-value">{{ log_steps.initial_state.c0 }}</div></div>
+            <div class="step-row"><div class="step-label">d0</div><div class="step-value">{{ log_steps.initial_state.d0 }}</div></div>
+          </div>
+        </div>
+
+        <!-- 2. Padding -->
+        <div class="round-box">
+          <div class="round-header">Step 2: Message Padding</div>
+          <div class="round-content">
+            <div class="step-row"><div class="step-label">Original Length</div><div class="step-value">{{ log_steps.padding_info.original_len_bytes }} bytes ({{ log_steps.padding_info.original_len_bits }} bits)</div></div>
+            <div class="step-row"><div class="step-label">Padded Message</div><div class="step-value" style="word-break: break-all;">
+                {{ log_steps.padding_info.original_message_hex }}<span style="color:var(--danger); font-weight:bold;">80</span><span style="color:#cbd5e1;">{% for i in range(log_steps.padding_info.zero_padding_bytes) %}00{% endfor %}</span><span style="color:var(--success); font-weight:bold;">{{ log_steps.padding_info.length_appended_hex }}</span>
+            </div></div>
+          </div>
+        </div>
+
+        <!-- 3. Block Processing -->
+        {% for block in log_steps.blocks %}
+        <div class="round-box">
+          <div class="round-header">Step 3: Process Block {{ block.block_index }}</div>
+          <div class="round-content">
+              <div class="log-info">Initialize A, B, C, D for this block from cumulative hash values.</div>
+              <div class="step-row"><div class="step-label">A</div><div class="step-value">{{ block.initial_abcd.A }}</div></div>
+              <div class="step-row"><div class="step-label">B</div><div class="step-value">{{ block.initial_abcd.B }}</div></div>
+              <div class="step-row"><div class="step-label">C</div><div class="step-value">{{ block.initial_abcd.C }}</div></div>
+              <div class="step-row"><div class="step-label">D</div><div class="step-value">{{ block.initial_abcd.D }}</div></div>
+              
+              <hr class="block-separator">
+              <h4 class="block-title">64 Rounds of Compression</h4>
+              
+              {% for round in block.rounds %}
+              <div class="round-detail">
+                  <div class="step-row"><div class="step-label">Round (j)</div><div class="step-value" style="font-weight: 700;">{{ round.j }}</div></div>
+                  <div class="step-row"><div class="step-label">Function</div><div class="step-value">{{ round.func }}</div></div>
+                  <div class="step-row"><div class="step-label">Result A</div><div class="step-value">{{ round.A_new }}</div></div>
+                  <div class="step-row"><div class="step-label">Result B</div><div class="step-value is-result">{{ round.B_new }}</div></div>
+                  <div class="step-row"><div class="step-label">Result C</div><div class="step-value">{{ round.C_new }}</div></div>
+                  <div class="step-row"><div class="step-label">Result D</div><div class="step-value">{{ round.D_new }}</div></div>
+              </div>
+              {% endfor %}
+
+              <hr class="block-separator">
+              <div class="log-info">Update cumulative hash values after processing block.</div>
+              <div class="step-row"><div class="step-label">h0' (h0+A)</div><div class="step-value is-result">{{ block.final_abcd.h0 }}</div></div>
+              <div class="step-row"><div class="step-label">h1' (h1+B)</div><div class="step-value is-result">{{ block.final_abcd.h1 }}</div></div>
+              <div class="step-row"><div class="step-label">h2' (h2+C)</div><div class="step-value is-result">{{ block.final_abcd.h2 }}</div></div>
+              <div class="step-row"><div class="step-label">h3' (h3+D)</div><div class="step-value is-result">{{ block.final_abcd.h3 }}</div></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      <!-- ****** END OF LOG DISPLAY ****** -->
     </section>
   </main>
 </body>
